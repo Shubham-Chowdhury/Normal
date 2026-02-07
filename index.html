@@ -17,7 +17,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* HEART */
 #heart {
     font-size: 24vw;
     cursor: pointer;
@@ -25,22 +24,27 @@ body {
     z-index: 10;
 }
 
-/* BOUQUET ROSE FALL */
 .bouquet {
     position: fixed;
     top: -15vh;
-    font-size: 55px;   /* BIGGER SIZE */
+    font-size: 55px;
     animation: fall linear forwards;
     pointer-events: none;
 }
 
-@keyframes fall {
-    to {
-        transform: translateY(120vh) rotate(360deg);
-    }
+.roseFinal {
+    position: fixed;
+    top: -10vh;
+    font-size: 38px;
+    animation: fall linear infinite;
+    pointer-events: none;
+    z-index: 6;
 }
 
-/* FINAL SCREEN */
+@keyframes fall {
+    to { transform: translateY(120vh) rotate(360deg); }
+}
+
 #finalScreen {
     position: fixed;
     inset: 0;
@@ -59,12 +63,6 @@ body {
     background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 10px #fff; }
-    to { text-shadow: 0 0 25px #ff4d6d; }
 }
 </style>
 </head>
@@ -73,29 +71,26 @@ body {
 <div id="heart">❤️</div>
 
 <div id="finalScreen">
-    <div id="finalText">Happy Rose Day Deha🌹</div>
+    <div id="finalText">Happy Rose Day Deha 🌹</div>
 </div>
 
-<!-- MUSIC FILE (UPLOAD perfect.mp3 TO GITHUB) -->
-<audio id="song" preload="auto">
-    <source src="perfect.mp3" type="audio/mpeg">
-</audio>
+<audio id="song" src="perfect.mp3" preload="auto"></audio>
 
 <script>
 const heart = document.getElementById("heart");
 const finalScreen = document.getElementById("finalScreen");
 const song = document.getElementById("song");
 
+document.body.addEventListener("click", () => { song.load(); }, { once:true });
+
 heart.onclick = function() {
     heart.style.display = "none";
-
-    // Start music safely after user click
     song.play().catch(()=>{});
-
     startBouquetRain();
 
     setTimeout(() => {
         finalScreen.style.opacity = "1";
+        startFinalRoseRain();
     }, 5000);
 };
 
@@ -107,15 +102,25 @@ function startBouquetRain() {
 function createBouquet() {
     const bouquet = document.createElement("div");
     bouquet.className = "bouquet";
-    bouquet.innerHTML = "💐";   // bouquet emoji
+    bouquet.innerHTML = "💐";
     bouquet.style.left = Math.random() * 100 + "vw";
     bouquet.style.animationDuration = (Math.random()*2 + 3) + "s";
     document.body.appendChild(bouquet);
-
     setTimeout(() => bouquet.remove(), 6000);
+}
+
+function startFinalRoseRain() {
+    setInterval(() => {
+        const rose = document.createElement("div");
+        rose.className = "roseFinal";
+        rose.innerHTML = "🌹";
+        rose.style.left = Math.random() * 100 + "vw";
+        rose.style.animationDuration = (Math.random()*2 + 3) + "s";
+        document.body.appendChild(rose);
+        setTimeout(() => rose.remove(), 6000);
+    }, 200);
 }
 </script>
 
 </body>
 </html>
-
